@@ -86,31 +86,7 @@ const getNextPage = ( { tableau, offset, baseUrl, path, token, limit, boardIds, 
 	} );
 };
 
-
-const TWO_DIGITS = 10;
 const MS_TRUNCATE = 19;
-
-const getPaddedValue = num => {
-	return num < TWO_DIGITS ? `0${ num }` : num.toString();
-};
-
-const formatDate = dateString => {
-	if ( !dateString ) {
-		return dateString;
-	}
-
-	const date = new Date( dateString );
-
-	const y = date.getUTCFullYear();
-	const m = getPaddedValue( date.getUTCMonth() );
-	const d = getPaddedValue( date.getUTCDate() );
-
-	const h = getPaddedValue( date.getUTCHours() );
-	const min = getPaddedValue( date.getUTCMinutes() );
-	const s = getPaddedValue( date.getUTCSeconds() );
-
-	return `${ y }-${ m }-${ d } ${ h }:${ min }:${ s }`;
-};
 
 const tableTransform = ( { tableauTable, cols } ) => {
 	const dateTimeCols = cols.filter( c => c.dataType === tableau.dataTypeEnum.datetime ).map( c => c.id );
@@ -120,7 +96,6 @@ const tableTransform = ( { tableauTable, cols } ) => {
 			rows.forEach( row => {
 				dateTimeCols.forEach( colKey => {
 					if ( row[ colKey ] ) {
-						row[ colKey ] = formatDate( row[ colKey ] );
 						row[ colKey ] = `${ row[ colKey ].substr( 0, MS_TRUNCATE ) }Z`;
 					}
 				} );
